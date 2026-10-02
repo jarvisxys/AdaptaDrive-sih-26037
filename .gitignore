@@ -27,6 +27,12 @@ codegen/
 # Console output captured while running a batch. The CSVs are the record.
 results/*.log
 
+# --- Superseded measurements -----------------------------------------------
+# Local backups of earlier matrices. Two runs.csv files with different numbers
+# in one repository is an invitation to quote the wrong one; the before/after
+# comparison that mattered is written up in docs/DEVIATIONS.md D29-D33.
+results/archive_*/
+
 # --- OS / editor cruft -----------------------------------------------------
 .DS_Store
 Thumbs.db
