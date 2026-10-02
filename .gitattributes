@@ -1,0 +1,27 @@
+# Normalise line endings so a clone on Linux/macOS does not show every MATLAB
+# file as modified. Text is stored LF in the repository and checked out with
+# the platform's native endings.
+* text=auto
+
+# MATLAB and documentation sources are text.
+*.m      text
+*.md     text
+*.csv    text
+*.txt    text
+*.json   text
+*.xml    text
+
+# Binary: never line-ending converted, never diffed as text.
+*.slx    binary
+*.mat    binary
+*.png    binary
+*.jpg    binary
+*.mp4    binary
+*.pdf    binary
+*.pptx   binary
+*.docx   binary
+
+# GitHub language statistics: this is a MATLAB project. Without this the
+# generated CSVs and the vendored PDFs skew the language bar.
+*.csv    linguist-generated
+docs/*.pdf  linguist-vendored
