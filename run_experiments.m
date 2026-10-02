@@ -34,6 +34,14 @@ p.addParameter('density',   1.0);
 p.addParameter('ablations', false);
 p.addParameter('logSeed',   1);
 p.addParameter('outDir',    adRoot('results'));
+% Where the seed-logSeed replay logs are written. Explicit, and separate from
+% outDir, because these two must never be assumed to travel together: a caller
+% that redirects outDir to keep its CSVs apart (run_stress does, per condition)
+% would otherwise still write its logs over the main matrix's, and the saved
+% run would stop matching the row in results/runs.csv that names it. That
+% happened: a density x2 intersection run overwrote the nominal one, and the
+% video renderer then replayed a stressed run labelled PROPOSED.
+p.addParameter('logDir',    adRoot('logs'));
 p.parse(varargin{:});
 opt = p.Results;
 
@@ -44,7 +52,7 @@ if opt.ablations
 end
 
 if ~isfolder(opt.outDir), mkdir(opt.outDir); end
-logDir = adRoot('logs');
+logDir = opt.logDir;
 if ~isfolder(logDir), mkdir(logDir); end
 
 env = check_env('print', false);

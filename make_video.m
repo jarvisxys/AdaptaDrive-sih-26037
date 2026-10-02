@@ -29,10 +29,10 @@ if nargin < 3 || isempty(seed), seed = 1; end
 if ~isfolder(opt.outDir), mkdir(opt.outDir); end
 
 % --- get the run -------------------------------------------------------
-[log, scenario, cfg] = loadOrRun(scenarioName, configName, seed);
+[log, scenario, cfg] = adLoadRun(scenarioName, configName, seed);
 cmp = [];
 if logical(opt.compare)
-    [logB, scenB, cfgB] = loadOrRun(scenarioName, 'BL1', seed);
+    [logB, scenB, cfgB] = adLoadRun(scenarioName, 'BL1', seed);
     cmp = struct('log', logB, 'scenario', scenB, 'cfg', cfgB);
 end
 
@@ -139,25 +139,6 @@ end
 
 close(fig);
 fprintf('  wrote %s\n', file);
-end
-
-% ========================================================================
-function [log, scenario, cfg] = loadOrRun(scenarioName, configName, seed)
-f = adRoot('logs', sprintf('%s_%s_seed%d.mat', scenarioName, configName, seed));
-if isfile(f)
-    S = load(f, 'log');
-    log = S.log;
-    cfg = log.meta.cfg;
-    scenario = buildScenario(log.meta.scenario, log.meta.seed, log.meta.density, cfg);
-else
-    fprintf('  no saved log for %s/%s/seed %d - running it now\n', ...
-        scenarioName, configName, seed);
-    cfg = configPreset(configName, 'scenario', scenarioName, 'seed', seed);
-    cfg.io.logDetail = 'full';
-    scenario = buildScenario(scenarioName, seed, 1.0, cfg);
-    res = SimEngine(scenario, cfg).run();
-    log = res.log;
-end
 end
 
 % ========================================================================
